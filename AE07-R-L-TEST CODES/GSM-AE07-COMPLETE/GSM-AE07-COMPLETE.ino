@@ -9,23 +9,14 @@
  */
 
 #include <Adafruit_ADS1X15.h>
-
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-
-//Adafruit_ADS1115 ads2(0x48);  /* Use this for the 16-bit version */
-//Adafruit_ADS1115 ads1(0x49);
-//IOTAppStory IAS(COMPDATE, MODEBUTTON);	// Initialize IotAppStory
-
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-
 Adafruit_ADS1115 ads1;
 Adafruit_ADS1115 ads2;
 
@@ -61,38 +52,26 @@ String adcString[8];
   
 int readSwitch(){
   analog_value = analogRead(ANALOG_PIN_0);
-
- 
-  return analog_value                                                                                                ; //Read analog
+  return analog_value; //Read analog
 }
 
-
-
 // ================================================ SETUP ================================================
-void setup() {
- 
-  
+void setup() { 
   Serial.begin(9600);
-
   Serial.println("Hello");
   
   Serial1.begin(9600, SERIAL_8N1, RS485_RX, RS485_TX);  
   Serial2.begin(9600, SERIAL_8N1, GSM_RX, GSM_TX); 
-
   delay(100);
 
   Wire.begin(16,17);
-
   delay(100);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
     Serial.println(F("SSD1306 allocation failed"));
   }
 
   display.display();
-
-
   Serial.println("Hello");
-
   pinMode(RS485_FC, OUTPUT);
   
   pinMode(OUTPUT1, OUTPUT);
@@ -100,10 +79,7 @@ void setup() {
   pinMode(OUTPUT3, OUTPUT);
   pinMode(OUTPUT4, OUTPUT);
   pinMode(OUTPUT5, OUTPUT);
-  pinMode(OUTPUT6, OUTPUT);
-
-   
-   
+  pinMode(OUTPUT6, OUTPUT);  
 
   pinMode(INPUT1, INPUT);
   pinMode(INPUT2, INPUT);
@@ -112,10 +88,8 @@ void setup() {
   pinMode(INPUT5, INPUT);
   pinMode(INPUT6, INPUT);
   pinMode(INPUT7, INPUT);  
-  
-  
+    
   adcAttachPin(36);
-
 
   digitalWrite(RS485_FC, HIGH);   // RS-485 
   timer1 = millis();
@@ -135,18 +109,9 @@ void setup() {
     Serial.write(inByte);
     }
   }
-
-  //
-  
 }
 
-
-
-
 void loop() {
-  
-
-
   // read from port 0, send to port 1:
   while (Serial.available()) {
     int inByte = Serial.read();
@@ -170,9 +135,7 @@ void loop() {
   Serial.println(""); 
   Serial.print("Push button  ");Serial.println(readSwitch());
   Serial.println(""); 
-  
-
-  
+    
   digitalWrite(OUTPUT1, HIGH);
   digitalWrite(OUTPUT2, LOW);
   digitalWrite(OUTPUT3, LOW);
@@ -223,7 +186,6 @@ void loop() {
   digitalWrite(OUTPUT6, LOW);
 
   Serial1.println("Hello RS-485");
-   
  //Serial2.println("AT");
  delay(1000);
  
