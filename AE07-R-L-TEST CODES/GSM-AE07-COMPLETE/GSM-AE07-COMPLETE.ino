@@ -1,11 +1,8 @@
-
 /*
  * Test Program for NORVI IIOT V2.0
  * Use appropriate libraries supplied.
  * All Outputs should be on when turned on Supplying power to inputs should turn on Relays.
- * Display shows ADC values from Buit-in buttons. Pressing Built-in buttons should change Value displayed on Display
- *   
- * 
+ * Display shows ADC values from Buit-in buttons. Pressing Built-in buttons should change Value displayed on Display 
  */
 
 #include <Adafruit_ADS1X15.h>
@@ -54,7 +51,6 @@ int readSwitch(){
   analog_value = analogRead(ANALOG_PIN_0);
   return analog_value; //Read analog
 }
-
 // ================================================ SETUP ================================================
 void setup() { 
   Serial.begin(9600);
@@ -88,7 +84,6 @@ void setup() {
   pinMode(INPUT5, INPUT);
   pinMode(INPUT6, INPUT);
   pinMode(INPUT7, INPUT);  
-    
   adcAttachPin(36);
 
   digitalWrite(RS485_FC, HIGH);   // RS-485 
@@ -100,7 +95,6 @@ void setup() {
     Serial.write(inByte);
     }
   }
-
   timer1 = millis();
   Serial2.println("AT+CPIN?");
   while(millis()<(timer1+10000)){
@@ -133,7 +127,8 @@ void loop() {
   Serial.println(""); 
 
   Serial.println(""); 
-  Serial.print("Push button  ");Serial.println(readSwitch());
+  Serial.print("Push button  ");
+  Serial.println(readSwitch());
   Serial.println(""); 
     
   digitalWrite(OUTPUT1, HIGH);
@@ -184,11 +179,6 @@ void loop() {
   digitalWrite(OUTPUT4, LOW);
   digitalWrite(OUTPUT5, LOW);
   digitalWrite(OUTPUT6, LOW);
-
   Serial1.println("Hello RS-485");
- //Serial2.println("AT");
- delay(1000);
- 
-  
-
+  delay(1000);
 }
