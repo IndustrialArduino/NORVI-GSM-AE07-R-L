@@ -40,6 +40,7 @@ Adafruit_ADS1115 ads2;
 
 #define GSM_RX 32
 #define GSM_TX 33
+#define GSM_RESET 21
 
 unsigned long int timer1 = 0;
 int analog_value = 0;
@@ -53,12 +54,18 @@ int readSwitch(){
 }
 // ================================================ SETUP ================================================
 void setup() { 
-  Serial.begin(9600);
+  void setup() {  
+  Serial.begin(115200);
   Serial.println("Hello");
   
-  Serial1.begin(9600, SERIAL_8N1, RS485_RX, RS485_TX);  
-  Serial2.begin(9600, SERIAL_8N1, GSM_RX, GSM_TX); 
-  delay(100);
+  pinMode(RS485_FC, OUTPUT);
+  digitalWrite(RS485_FC, HIGH);   // RS-485 
+  
+  Serial1.begin(9600, SERIAL_8N1, RS485_RX, RS485_TX); 
+  Serial2.begin(115200, SERIAL_8N1, GSM_RX, GSM_TX); 
+
+  pinMode(GSM_RESET, OUTPUT);
+  digitalWrite(GSM_RESET, HIGH);    
 
   Wire.begin(16,17);
   delay(100);
@@ -67,15 +74,13 @@ void setup() {
   }
 
   display.display();
-  Serial.println("Hello");
-  pinMode(RS485_FC, OUTPUT);
   
   pinMode(OUTPUT1, OUTPUT);
   pinMode(OUTPUT2, OUTPUT);
   pinMode(OUTPUT3, OUTPUT);
   pinMode(OUTPUT4, OUTPUT);
   pinMode(OUTPUT5, OUTPUT);
-  pinMode(OUTPUT6, OUTPUT);  
+  pinMode(OUTPUT6, OUTPUT); 
 
   pinMode(INPUT1, INPUT);
   pinMode(INPUT2, INPUT);
@@ -84,9 +89,8 @@ void setup() {
   pinMode(INPUT5, INPUT);
   pinMode(INPUT6, INPUT);
   pinMode(INPUT7, INPUT);  
+    
   adcAttachPin(36);
-
-  digitalWrite(RS485_FC, HIGH);   // RS-485 
   timer1 = millis();
   Serial2.println("AT");
   while(millis()<(timer1+10000)){
@@ -95,6 +99,7 @@ void setup() {
     Serial.write(inByte);
     }
   }
+
   timer1 = millis();
   Serial2.println("AT+CPIN?");
   while(millis()<(timer1+10000)){
